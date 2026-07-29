@@ -90,7 +90,8 @@ async function loadRuns() {
   const loaded = await Promise.all(listing.run_ids.map((id) => request(`/runs/${id}`)));
   state.runs = orderByLineage(loaded);
   renderLineage();
-  if (state.runs.length) selectRun(state.runs[state.runs.length - 1]);
+  const preferred = [...state.runs].reverse().find((run) => run.receipt?.verified);
+  if (preferred || state.runs.length) selectRun(preferred || state.runs[state.runs.length - 1]);
 }
 
 function orderByLineage(runs) {

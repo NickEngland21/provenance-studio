@@ -179,4 +179,3 @@ def create_production_repository() -> StorageRunRepository:
         raise LiveModeDisabledError("Live production repository is not authorized or configured")
     backend = _create_b2_backend()
     return StorageRunRepository(backend)
-    

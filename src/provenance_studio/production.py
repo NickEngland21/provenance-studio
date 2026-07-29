@@ -84,6 +84,29 @@ def _create_provider(provider_name: str, output_dir: str | None = None) -> tuple
     raise LiveModeDisabledError(f"Unsupported live provider: {provider_name}")
 
 
+def _create_b2_backend() -> S3StorageBackend:
+    """Create a B2 backend compatible with a bucket-scoped application key.
+
+    Backblaze bucket-scoped keys permit object I/O but reject the S3 HeadBucket
+    request used by Genblaze's region preflight.  The deployment supplies the
+    exact bucket-console region, so skip that incompatible discovery request and
+    mark the configured region verified.  Real object operations still fail
+    normally if the endpoint or credentials are wrong.
+    """
+
+    backend = S3StorageBackend.for_backblaze(
+        os.environ["B2_BUCKET"],
+        region=os.environ.get("B2_REGION", "us-west-004"),
+        key_id=os.environ["B2_KEY_ID"],
+        app_key=os.environ["B2_APP_KEY"],
+        public_url_base=os.environ.get("B2_PUBLIC_URL_BASE") or None,
+        auto_lifecycle=False,
+        preflight=False,
+    )
+    backend._region_verified = True
+    return backend
+
+
 def create_production_asset(
     prompt: str,
     *,
@@ -101,15 +124,7 @@ def create_production_asset(
     if not prompt.strip():
         raise ValueError("prompt must not be empty")
 
-    region = os.environ.get("B2_REGION", "us-west-004")
-    backend = S3StorageBackend.for_backblaze(
-        os.environ["B2_BUCKET"],
-        region=region,
-        key_id=os.environ["B2_KEY_ID"],
-        app_key=os.environ["B2_APP_KEY"],
-        public_url_base=os.environ.get("B2_PUBLIC_URL_BASE") or None,
-        auto_lifecycle=False,
-    )
+    backend = _create_b2_backend()
     sink = ObjectStorageSink(
         backend,
         prefix="provenance-studio",
@@ -148,12 +163,5 @@ def create_production_repository() -> StorageRunRepository:
     state = readiness()
     if not state.ready:
         raise LiveModeDisabledError("Live production repository is not authorized or configured")
-    backend = S3StorageBackend.for_backblaze(
-        os.environ["B2_BUCKET"],
-        region=os.environ.get("B2_REGION", "us-west-004"),
-        key_id=os.environ["B2_KEY_ID"],
-        app_key=os.environ["B2_APP_KEY"],
-        public_url_base=os.environ.get("B2_PUBLIC_URL_BASE") or None,
-        auto_lifecycle=False,
-    )
+    backend = _create_b2_backend()
     return StorageRunRepository(backend)

@@ -1,0 +1,17 @@
+Generative media moves fast, but approved assets often lose their history. Teams need to know which prompt created a file, which version it came from, where the canonical copy lives, and whether those bytes have changed.
+
+Provenance Studio turns every generation into a verifiable workflow. A creator enters a campaign prompt and receives an image plus a run ID, provider and model details, and a cryptographic verification receipt.
+
+Refinement preserves the relationship. The new result points back to its parent, so reviewers can move through the lineage instead of comparing disconnected downloads.
+
+Under the hood, Genblaze orchestrates the selected generative provider and produces a canonical manifest. The live submission uses NVIDIA NIM through Genblaze. Backblaze B2 stores the generated media and manifests using content-addressable keys, so identical bytes share one durable object.
+
+Verification does not trust database metadata. Provenance Studio fetches the stored B2 object, recomputes its SHA-256 digest, and compares that value with the signed workflow record.
+
+Here is the failure path. In an isolated demonstration, changing one stored byte makes verification fail immediately. Restoring the original bytes makes the receipt pass again. The public production bucket is never altered for this demonstration.
+
+The browser experience includes parent-first lineage, media zoom and download, receipt refresh, a private judge-access token, and a strict generation limit. Live services stay disabled unless every required credential and the explicit enable flag are present.
+
+This draft reserves the final live segment for the authorized NVIDIA and Backblaze run. Once inserted, judges will see the generated asset, its B2-backed receipt, and the public deployment operating end to end.
+
+Provenance Studio gives creative teams speed without surrendering provenance: generate, refine, store, and verify every campaign asset.

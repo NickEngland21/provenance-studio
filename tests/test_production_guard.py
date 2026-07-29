@@ -6,9 +6,23 @@ from genblaze_s3 import S3StorageBackend
 from provenance_studio.production import (
     LiveModeDisabledError,
     _create_b2_backend,
+    _image_params,
     create_production_asset,
     readiness,
 )
+
+
+def test_current_nvidia_model_uses_its_supported_native_shape() -> None:
+    assert _image_params("black-forest-labs/flux.2-klein-4b") == {
+        "width": 1392,
+        "height": 752,
+        "cfg_scale": 1,
+        "steps": 4,
+        "samples": 1,
+    }
+    assert _image_params("black-forest-labs/flux.1-schnell") == {
+        "aspect_ratio": "16:9"
+    }
 
 
 def test_readiness_never_exposes_secret_values() -> None:
@@ -104,3 +118,4 @@ def test_bucket_scoped_b2_key_skips_incompatible_head_bucket(
         "preflight": False,
     }
     assert backend._region_verified is True
+    

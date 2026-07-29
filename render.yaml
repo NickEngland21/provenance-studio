@@ -24,7 +24,7 @@ services:
       - key: NVIDIA_API_KEY
         sync: false
       - key: NVIDIA_IMAGE_MODEL
-        value: black-forest-labs/flux.1-schnell
+        value: black-forest-labs/flux.2-klein-4b
       - key: DEMO_ACCESS_TOKEN
         sync: false
       - key: MAX_GENERATIONS_PER_PROCESS

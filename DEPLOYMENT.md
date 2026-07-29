@@ -24,7 +24,8 @@ No deployment has occurred. Deployment requires:
 1. A public repository under the intended `NickEngland21` account.
 2. A user-created Render account and acceptance of Render's terms.
 3. A user-created Backblaze B2 bucket and least-privilege application key.
-4. A user-created GMI Cloud account and usable provider credit.
+4. A user-created NVIDIA developer API key on its no-card free serverless tier,
+   or an explicitly selected GMI Cloud account with usable provider credit.
 5. Secret values entered directly by the user in Render; they must never be sent
    through chat, committed, logged, or embedded in a manifest.
 6. A strong judge access token entered as `DEMO_ACCESS_TOKEN`; generation is

@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "provenance-studio"
+version = "0.1.0"
+description = "Tamper-evident generative media workflows using Genblaze and B2-compatible storage."
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = [
+  "fastapi>=0.116,<1",
+  "genblaze-core>=0.3.8,<0.4",
+  "genblaze-s3>=0.3.6,<0.4",
+  "pillow>=10,<12",
+  "uvicorn>=0.35,<1",
+]
+
+[project.optional-dependencies]
+dev = ["httpx>=0.28,<1", "pytest>=9,<10", "ruff>=0.12,<1"]
+production = ["genblaze-gmicloud>=0.3.5,<0.4"]
+
+[project.scripts]
+provenance-studio-demo = "provenance_studio.cli:main"
+provenance-studio-api = "provenance_studio.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/provenance_studio"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "S"]
+ignore = ["S101"]

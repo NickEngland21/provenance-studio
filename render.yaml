@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: provenance-studio
+    runtime: docker
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    autoDeployTrigger: off
+    envVars:
+      - key: PROVENANCE_STUDIO_ENABLE_LIVE
+        value: "true"
+      - key: B2_BUCKET
+        sync: false
+      - key: B2_REGION
+        sync: false
+      - key: B2_KEY_ID
+        sync: false
+      - key: B2_APP_KEY
+        sync: false
+      - key: B2_PUBLIC_URL_BASE
+        sync: false
+      - key: GMI_API_KEY
+        sync: false
+      - key: DEMO_ACCESS_TOKEN
+        sync: false
+      - key: MAX_GENERATIONS_PER_PROCESS
+        value: "25"
+      - key: GMI_IMAGE_MODEL
+        value: seedream-5.0-lite

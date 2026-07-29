@@ -1,0 +1,14 @@
+.env
+.git
+.app-data
+.clean-demo
+.demo
+.browser-demo*
+.pytest_cache
+.runtime
+__pycache__
+*.egg-info
+*.py[cod]
+build
+dist
+tests

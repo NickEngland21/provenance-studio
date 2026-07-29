@@ -32,9 +32,11 @@ Expected proof:
 
 ## Production seam
 
-The guarded production path uses `S3StorageBackend.for_backblaze(...)` and the
-Genblaze GMI Cloud provider. The same API exposes the workflow to a future
-browser client. Credentials remain outside manifests and source control.
+The guarded production path uses `S3StorageBackend.for_backblaze(...)` and a
+Genblaze provider selected by `GEN_MEDIA_PROVIDER`. NVIDIA NIM is the default
+no-card route documented by Backblaze's official hackathon starter; GMI Cloud
+remains an explicit fallback. Credentials remain outside manifests and source
+control.
 
 The local API binds to `127.0.0.1` by default and provides generation, refinement,
 listing, verification, asset download, health, and interactive OpenAPI routes.
@@ -48,8 +50,8 @@ written to local storage.
 
 ## Guarded production mode
 
-`provenance_studio.production` contains the real GMI Cloud → Genblaze →
-Backblaze B2 seam. It refuses to initialize either live client unless the
+`provenance_studio.production` contains the real NVIDIA/GMI → Genblaze →
+Backblaze B2 seam. It refuses to initialize any live client unless the
 deployment explicitly sets `PROVENANCE_STUDIO_ENABLE_LIVE=true` and provides all
 required environment variables. Copy variable names from `.env.example`; never
 commit actual values. Live mode is intentionally not enabled during local proof.

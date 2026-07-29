@@ -11,3 +11,6 @@ __pycache__/
 build/
 dist/
 dist-*/
+media/video/draft/
+media/video/*.wav
+media/video/*.mp4

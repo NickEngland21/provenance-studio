@@ -17,7 +17,7 @@ Show the parent run ID and the two-item lineage view.
 
 ## 1:05-1:35 — Explain the architecture
 
-Use one simple diagram: GMI Cloud produces media, Genblaze records the canonical
+Use one simple diagram: NVIDIA NIM produces media, Genblaze records the canonical
 workflow, and content-addressed assets plus manifests live in Backblaze B2.
 Explain that identical bytes share one storage object.
 

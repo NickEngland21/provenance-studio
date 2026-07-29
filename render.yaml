@@ -19,11 +19,13 @@ services:
         sync: false
       - key: B2_PUBLIC_URL_BASE
         sync: false
-      - key: GMI_API_KEY
+      - key: GEN_MEDIA_PROVIDER
+        value: nvidia
+      - key: NVIDIA_API_KEY
         sync: false
+      - key: NVIDIA_IMAGE_MODEL
+        value: black-forest-labs/flux.1-schnell
       - key: DEMO_ACCESS_TOKEN
         sync: false
       - key: MAX_GENERATIONS_PER_PROCESS
         value: "25"
-      - key: GMI_IMAGE_MODEL
-        value: seedream-5.0-lite

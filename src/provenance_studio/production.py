@@ -72,7 +72,7 @@ def _create_provider(provider_name: str, output_dir: str | None = None) -> tuple
                 api_key=os.environ["NVIDIA_API_KEY"],
                 output_dir=output_dir,
             ),
-            os.environ.get("NVIDIA_IMAGE_MODEL", "black-forest-labs/flux.1-schnell"),
+            os.environ.get("NVIDIA_IMAGE_MODEL", "black-forest-labs/flux.2-klein-4b"),
         )
     if provider_name == "gmi":
         from genblaze_gmicloud import GMICloudImageProvider
@@ -82,6 +82,20 @@ def _create_provider(provider_name: str, output_dir: str | None = None) -> tuple
             os.environ.get("GMI_IMAGE_MODEL", "seedream-5.0-lite"),
         )
     raise LiveModeDisabledError(f"Unsupported live provider: {provider_name}")
+
+
+def _image_params(model: str) -> dict[str, Any]:
+    if model == "black-forest-labs/flux.2-klein-4b":
+        # NVIDIA's current low-latency FLUX endpoint accepts native dimensions
+        # rather than the older aspect_ratio convenience field.
+        return {
+            "width": 1392,
+            "height": 752,
+            "cfg_scale": 1,
+            "steps": 4,
+            "samples": 1,
+        }
+    return {"aspect_ratio": "16:9"}
 
 
 def _create_b2_backend() -> S3StorageBackend:
@@ -150,8 +164,8 @@ def create_production_asset(
                 model=model,
                 prompt=prompt.strip(),
                 modality=Modality.IMAGE,
-                aspect_ratio="16:9",
                 metadata={"workflow": "campaign-asset"},
+                **_image_params(model),
             ).run(sink=sink, raise_on_failure=True, progress=False, timeout=180)
         finally:
             close = getattr(provider, "close", None)
@@ -165,3 +179,4 @@ def create_production_repository() -> StorageRunRepository:
         raise LiveModeDisabledError("Live production repository is not authorized or configured")
     backend = _create_b2_backend()
     return StorageRunRepository(backend)
+    

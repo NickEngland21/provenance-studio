@@ -118,4 +118,3 @@ def test_bucket_scoped_b2_key_skips_incompatible_head_bucket(
         "preflight": False,
     }
     assert backend._region_verified is True
-    

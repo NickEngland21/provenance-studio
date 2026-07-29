@@ -48,7 +48,7 @@ never placed in source, manifests, or browser-visible responses.
 
 ## Current proof boundary
 
-The offline workflow and HTTP API are tested. The B2/GMI production seam and
+The offline workflow and HTTP API are tested. The B2/NVIDIA production seam and
 Render deployment configuration are implemented but have not been exercised
 against live services. Replace this paragraph with live evidence before final
 submission.

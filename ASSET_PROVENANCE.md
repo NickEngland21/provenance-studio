@@ -12,5 +12,6 @@
   a prompt-derived color treatment plus a five-pixel provenance accent. The
   original generated source remains unchanged.
 
-The final live workflow must use the configured GMI Cloud provider; this fixture
-is local proof and must not be represented as a live provider result.
+The final live workflow must use the configured external provider through
+Genblaze; this fixture is local proof and must not be represented as a live
+provider result.

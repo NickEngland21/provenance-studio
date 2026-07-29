@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>Provenance Studio</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <svg class="brand-mark" viewBox="0 0 40 48" aria-hidden="true">
+        <path d="M20 2 37 12v24L20 46 3 36V12Z M20 2v44M3 12l34 24M37 12 3 36M3 12l17 10 17-10M3 36l17-10 17 10"/>
+      </svg>
+      <h1 class="brand-name">Provenance Studio</h1>
+    </header>
+
+    <main class="workbench">
+      <section class="prompt-rail" aria-labelledby="prompt-title">
+        <form id="generate-form">
+          <label id="prompt-title" for="prompt">Prompt</label>
+          <textarea id="prompt" name="prompt" maxlength="2000" required>A sculptural glass speaker in a midnight studio</textarea>
+          <button class="generate-button" id="generate-button" type="submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 1.4 4.6L18 8l-4.6 1.4L12 14l-1.4-4.6L6 8l4.6-1.4L12 2Zm7 11 .8 2.2L22 16l-2.2.8L19 19l-.8-2.2L16 16l2.2-.8L19 13ZM5 14l1.1 3.9L10 19l-3.9 1.1L5 24l-1.1-3.9L0 19l3.9-1.1L5 14Z"/></svg>
+            <span>Generate</span>
+          </button>
+          <div class="rule"></div>
+          <label for="access-token">Judge access</label>
+          <div class="token-control">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3m-9 0h8a2 2 0 0 1 2 2v8H6v-8a2 2 0 0 1 2-2Z"/></svg>
+            <input id="access-token" type="password" autocomplete="off" aria-label="Judge access token">
+            <button id="toggle-token" class="icon-button" type="button" aria-label="Show judge access token">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
+            </button>
+          </div>
+        </form>
+
+        <section class="lineage" aria-labelledby="lineage-title">
+          <h2 id="lineage-title">Lineage</h2>
+          <ol id="lineage-list"></ol>
+        </section>
+      </section>
+
+      <section class="media-stage" aria-label="Generated asset">
+        <div class="asset-frame">
+          <img id="asset-image" alt="" hidden>
+          <div id="empty-asset" class="empty-asset" aria-hidden="true">
+            <svg viewBox="0 0 80 96"><path d="M40 4 74 24v48L40 92 6 72V24Z M40 4v88M6 24l68 48M74 24 6 72"/></svg>
+          </div>
+        </div>
+        <div class="media-toolbar">
+          <div class="zoom-tools">
+            <button id="zoom-out" class="icon-button" type="button" aria-label="Zoom out">−</button>
+            <output id="zoom-value">100%</output>
+            <button id="zoom-in" class="icon-button" type="button" aria-label="Zoom in">+</button>
+          </div>
+          <a id="download-asset" class="icon-button" aria-label="Download asset" download hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 19v2h16v-2"/></svg>
+          </a>
+          <button id="refine-button" class="refine-button" type="button" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16-1 5 5-1L20 8l-4-4L4 16Zm10-10 4 4"/></svg>
+            Refine this version
+          </button>
+        </div>
+      </section>
+
+      <aside class="receipt" aria-labelledby="receipt-title">
+        <div class="receipt-heading">
+          <h2 id="receipt-title">Verification receipt</h2>
+          <button id="verify-button" class="icon-button" type="button" aria-label="Refresh verification" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7V3l-2 2a8 8 0 1 0 2 11M4 17v4l2-2"/></svg>
+          </button>
+        </div>
+        <div id="receipt-state" class="receipt-state pending">
+          <svg viewBox="0 0 72 84" aria-hidden="true"><path d="M36 3c10 7 20 10 31 12v24c0 21-13 34-31 42C18 73 5 60 5 39V15C16 13 26 10 36 3Zm-15 37 10 10 21-23"/></svg>
+          <strong id="verified-label">Verified</strong>
+        </div>
+        <dl class="receipt-facts">
+          <div><dt>Run ID</dt><dd id="run-id">—</dd></div>
+          <div><dt>Parent</dt><dd id="parent-id">—</dd></div>
+          <div><dt>Provider</dt><dd id="provider">—</dd></div>
+          <div><dt>Model</dt><dd id="model">—</dd></div>
+          <div><dt>Manifest hash</dt><dd id="manifest-hash">—</dd></div>
+          <div><dt>Asset hash</dt><dd id="asset-hash">—</dd></div>
+        </dl>
+      </aside>
+    </main>
+
+    <footer class="status-strip">
+      <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c4 5 7 9 7 13a7 7 0 1 1-14 0c0-3 2-6 4-9 0 5 3 7 3 7s-1-5 0-11Z"/></svg>Backblaze B2</span>
+      <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 8 5v10l-8 5-8-5V7l8-5Zm0 4-5 3v6l5 3 5-3V9l-5-3Z"/></svg>Genblaze</span>
+    </footer>
+    <div id="live-status" class="sr-only" role="status" aria-live="polite"></div>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
